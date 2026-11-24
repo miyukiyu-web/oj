@@ -323,7 +323,8 @@ if (paramCls !== null) {
   localStorage.setItem('yc_oj_student_target_cls', paramCls.trim());
 }
 
-const gasUrl = (paramApi || localStorage.getItem('yc_oj_student_gas_url') || '').trim();
+const BUILTIN_GAS_URL = "https://script.google.com/macros/s/AKfycbzOXMN8ZkeeYWpVIXZpS-Y6wgroHiD1OfK9D-rq_VYhmD5wX4W2nVcRS_eHETkrbQBA/exec";
+const gasUrl = (paramApi || localStorage.getItem('yc_oj_student_gas_url') || BUILTIN_GAS_URL).trim();
 const targetClassFilter = (paramCls !== null ? paramCls : (localStorage.getItem('yc_oj_student_target_cls') || '')).trim();
 
 if (targetClassFilter) {
@@ -657,10 +658,7 @@ except Exception:
 }
 
 function normalizeOutput(str) {
-  return str.replace(/
-/g, '
-').replace(/[ 	]+$/gm, '').replace(/
-+$/, '');
+  return str.replace(/\r\n/g, '\n').replace(/[ \t]+$/gm, '').replace(/\n+$/, '');
 }
 
 async function runSampleOnly() {
