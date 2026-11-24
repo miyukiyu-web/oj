@@ -446,8 +446,7 @@ async function syncCurrentStudentToCloud(manualClick = false) {
 
 function openStudentLoginModal() {
   if (currentStudent && currentStudent.name) {
-    if (!confirm(`目前登入學員為「${currentStudent.account} ${currentStudent.name}」。
-確定要登出嗎？`)) return;
+    if (!confirm(`目前登入學員為「${currentStudent.account} ${currentStudent.name}」。\n確定要登出嗎？`)) return;
     currentStudent = null;
     localStorage.removeItem('yc_oj_current_student');
     solvedSet = new Set();
@@ -630,7 +629,7 @@ function detectZeroJudgePitfalls(userCode, prob) {
   if (/input\s*\(\s*['"].+?['"]\s*\)/.test(userCode)) {
     warnings.push('⚠️ <strong>ZeroJudge 規範提醒：</strong>偵測到你的 <code>input()</code> 括號內含有提示文字！在 OJ 系統上提示文字會被當成多餘輸出而判為 WA，請改用乾淨的 <code>input()</code>。');
   }
-  if (prob.tests[0].input === '' && /input\s*\(/.test(userCode)) {
+  if (prob.tests[0].input === '' && /\binput\s*\(/.test(userCode)) {
     warnings.push('⚠️ <strong>ZeroJudge 規範提醒：</strong>本題沒有任何輸入資料，請勿在程式中使用 <code>input()</code>，否則會發生 EOFError！');
   }
   return warnings;
@@ -718,10 +717,7 @@ async function submitJudge() {
         detailsHtml += `<div class="text-emerald-400">✔ 測資 #${i + 1} (${i === 0 ? '範例測資' : '隱藏測資'})：通過 (AC)</div>`;
       } else {
         allPassed = false;
-        detailsHtml += `<div class="bg-rose-950/30 border border-rose-500/30 p-2.5 rounded mt-1"><div class="text-rose-400 font-bold">✘ 測資 #${i + 1} (${i === 0 ? '範例測資' : '隱藏測資'})：答案錯誤 (WA)</div><div class="text-slate-400 mt-1">輸入：<code class="text-slate-200">${escapeHtml(tc.input.replace(/
-/g, ' ↵ ') || '(無)')}</code></div><div class="text-slate-400">你的輸出：<code class="text-rose-300">${escapeHtml(actual.replace(/
-/g, ' ↵ ') || '(空)')}</code> ｜ 正確答案：<code class="text-yellow-300">${escapeHtml(expected.replace(/
-/g, ' ↵ '))}</code></div></div>`;
+        detailsHtml += `<div class="bg-rose-950/30 border border-rose-500/30 p-2.5 rounded mt-1"><div class="text-rose-400 font-bold">✘ 測資 #${i + 1} (${i === 0 ? '範例測資' : '隱藏測資'})：答案錯誤 (WA)</div><div class="text-slate-400 mt-1">輸入：<code class="text-slate-200">${escapeHtml(tc.input.replace(/\n/g, ' ↵ ') || '(無)')}</code></div><div class="text-slate-400">你的輸出：<code class="text-rose-300">${escapeHtml(actual.replace(/\n/g, ' ↵ ') || '(空)')}</code> ｜ 正確答案：<code class="text-yellow-300">${escapeHtml(expected.replace(/\n/g, ' ↵ '))}</code></div></div>`;
         break;
       }
     }
